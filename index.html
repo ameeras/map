@@ -4,49 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Карта Казахстана</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <style>
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-            position: relative;
         }
-        iframe {
-            width: 800px;
-            height: 600px;
-            border: none;
-        }
-        .point {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background-color: red;
-            border-radius: 50%;
-            cursor: pointer;
-            transform: translate(-50%, -50%);
+        #map {
+            width: 100%;
+            height: 100vh;
         }
     </style>
 </head>
 <body>
-    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=46.0%2C40.0%2C90.0%2C55.0&layer=mapnik"></iframe>
-    
-    <!-- Города -->
-    <div class="point" style="top: 40%; left: 50%;" onclick="window.open('https://ru.wikipedia.org/wiki/Астана')" title="Астана"></div>
-    <div class="point" style="top: 60%; left: 52%;" onclick="window.open('https://ru.wikipedia.org/wiki/Алматы')" title="Алматы"></div>
-    <div class="point" style="top: 45%; left: 30%;" onclick="window.open('https://ru.wikipedia.org/wiki/Атырау')" title="Атырау"></div>
-    <div class="point" style="top: 50%; left: 40%;" onclick="window.open('https://ru.wikipedia.org/wiki/Караганда')" title="Караганда"></div>
-    <div class="point" style="top: 65%; left: 55%;" onclick="window.open('https://ru.wikipedia.org/wiki/Шымкент')" title="Шымкент"></div>
-    
-    <!-- Исторические памятники -->
-    <div class="point" style="top: 35%; left: 42%;" onclick="window.open('https://ru.wikipedia.org/wiki/Мавзолей_Ходжи_Ахмеда_Ясави')" title="Мавзолей Ходжи Ахмеда Ясави"></div>
-    <div class="point" style="top: 55%; left: 47%;" onclick="window.open('https://ru.wikipedia.org/wiki/Тамгалы')" title="Петроглифы Тамгалы"></div>
-    <div class="point" style="top: 48%; left: 35%;" onclick="window.open('https://ru.wikipedia.org/wiki/Бегазы-Дандыбаевская_культура')" title="Бегазы-Дандыбаевская культура"></div>
-    <div class="point" style="top: 38%; left: 60%;" onclick="window.open('https://ru.wikipedia.org/wiki/Отырар')" title="Отырар"></div>
-    <div class="point" style="top: 42%; left: 28%;" onclick="window.open('https://ru.wikipedia.org/wiki/Сарайшик')" title="Сарайшик"></div>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([48.0, 67.0], 5);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        
+        var points = [
+            { name: "Астана", coords: [51.1694, 71.4491], url: "https://ru.wikipedia.org/wiki/Астана" },
+            { name: "Алматы", coords: [43.2383, 76.9455], url: "https://ru.wikipedia.org/wiki/Алматы" },
+            { name: "Атырау", coords: [47.1167, 51.8833], url: "https://ru.wikipedia.org/wiki/Атырау" },
+            { name: "Караганда", coords: [49.8028, 73.1023], url: "https://ru.wikipedia.org/wiki/Караганда" },
+            { name: "Шымкент", coords: [42.3167, 69.5958], url: "https://ru.wikipedia.org/wiki/Шымкент" },
+            { name: "Мавзолей Ходжи Ахмеда Ясави", coords: [43.2920, 68.2690], url: "https://ru.wikipedia.org/wiki/Мавзолей_Ходжи_Ахмеда_Ясави" },
+            { name: "Петроглифы Тамгалы", coords: [43.75, 75.55], url: "https://ru.wikipedia.org/wiki/Тамгалы" },
+            { name: "Бегазы-Дандыбаевская культура", coords: [48.0, 73.0], url: "https://ru.wikipedia.org/wiki/Бегазы-Дандыбаевская_культура" },
+            { name: "Отырар", coords: [42.8536, 68.2794], url: "https://ru.wikipedia.org/wiki/Отырар" },
+            { name: "Сарайшик", coords: [47.5, 51.5], url: "https://ru.wikipedia.org/wiki/Сарайшик" }
+        ];
+        
+        points.forEach(point => {
+            L.marker(point.coords).addTo(map)
+                .bindPopup(`<a href="${point.url}" target="_blank">${point.name}</a>`);
+        });
+    </script>
 </body>
 </html>
